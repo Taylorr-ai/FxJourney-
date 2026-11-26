@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <title>Trade Journal — FX Journey</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2d;--line:#213653;--blue:#4da3ff;--cyan:#67dcff;--white:#f4f8ff;--muted:#8da2ba;--green:#38d9a9;--red:#ff7184}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px;background:var(--bg);color:var(--white);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+    main{max-width:1100px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px}.top h1{margin:0;font-size:26px}.top a{color:var(--cyan);text-decoration:none}.top a:hover{text-decoration:underline}
+    .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}.card,.table-wrap{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px}.label{color:var(--muted);font-size:12px}.value{margin-top:5px;font-size:22px;font-weight:750}.positive{color:var(--green)}.negative{color:var(--red)}
+    .table-wrap{overflow-x:auto;padding:0}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:13px 15px;border-bottom:1px solid #21365399}th{color:var(--muted);font-size:12px;font-weight:600}tbody tr:last-child td{border-bottom:0}.empty{padding:30px;text-align:center;color:var(--muted)}
+    @media(max-width:600px){body{padding:14px}.summary{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main>
+    <header class="top"><h1>Trade Journal</h1><a href="./">← Back to dashboard</a></header>
+    <section class="summary" aria-label="Trade summary">
+      <div class="card"><div class="label">Total trades</div><div class="value" id="total">0</div></div>
+      <div class="card"><div class="label">Winning trades</div><div class="value positive" id="wins">0</div></div>
+      <div class="card"><div class="label">Net P&amp;L</div><div class="value" id="net">$0.00</div></div>
+    </section>
+    <section class="table-wrap" aria-label="All logged trades">
+      <table><thead><tr><th>Pair</th><th>Side</th><th>Entry</th><th>Stop</th><th>Size</th><th>P&amp;L</th><th>Result</th></tr></thead><tbody id="trades"></tbody></table>
+      <div class="empty" id="empty" hidden>No trades logged yet. Use “Log Trade” on the dashboard to add your first trade.</div>
+    </section>
+  </main>
+  <script>
+    const currency = (() => { try { return JSON.parse(localStorage.getItem('fxjourney-settings') || '{}').currency || 'USD'; } catch { return 'USD'; } })();
+    let trades = [];
+    try { const saved = JSON.parse(localStorage.getItem('fxjourney-trades') || '[]'); trades = Array.isArray(saved) ? saved : []; } catch { trades = []; }
+    const money = n => { try { return new Intl.NumberFormat(undefined, { style:'currency', currency }).format(Number(n) || 0); } catch { return '$' + (Number(n) || 0).toFixed(2); } };
+    const safe = value => String(value ?? '—').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const wins = trades.filter(t => Number(t.pnl) > 0);
+    const net = trades.reduce((sum,t) => sum + (Number(t.pnl) || 0), 0);
+    document.querySelector('#total').textContent = trades.length;
+    document.querySelector('#wins').textContent = wins.length;
+    const netEl = document.querySelector('#net'); netEl.textContent = money(net); netEl.classList.toggle('negative', net < 0); netEl.classList.toggle('positive', net >= 0);
+    const body = document.querySelector('#trades');
+    body.innerHTML = trades.length ? trades.slice().reverse().map(t => { const pnl = Number(t.pnl) || 0; return `<tr><td>${safe(t.symbol)}</td><td>${safe(t.side)}</td><td>${safe(t.entry)}</td><td>${safe(t.stop)}</td><td>${safe(t.lots)}</td><td class="${pnl >= 0 ? 'positive' : 'negative'}">${money(pnl)}</td><td>${pnl >= 0 ? 'Win' : 'Loss'}</td></tr>`; }).join('') : '';
+    document.querySelector('#empty').hidden = trades.length > 0;
+  </script>
+</body>
+</html>
