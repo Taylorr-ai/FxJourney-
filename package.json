@@ -1,0 +1,13 @@
+{
+  "name": "fxjourney",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^39.1.0"
+  }
+}
