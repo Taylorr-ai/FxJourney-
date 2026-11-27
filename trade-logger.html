@@ -20,6 +20,8 @@
         <div class="field"><label for="side">Direction</label><select id="side"><option>Long</option><option>Short</option></select></div>
         <div class="field"><label for="lots">Opened size (lots / units)</label><input id="lots" type="number" min="0.000001" step="any" placeholder="e.g. 1.00" required></div>
         <div class="field"><label for="entry">Entry price</label><input id="entry" type="number" min="0" step="any" required></div>
+        <div class="field"><label for="stopLoss">Stop loss</label><input id="stopLoss" type="number" min="0" step="any" placeholder="Optional price level"><span class="hint">Optional protective stop price.</span></div>
+        <div class="field"><label for="takeProfit">Take profit</label><input id="takeProfit" type="number" min="0" step="any" placeholder="Optional price level"><span class="hint">Optional target price.</span></div>
         <div class="field"><label for="contractSize">Contract size per lot</label><input id="contractSize" type="number" min="0.000001" step="any" value="100000" required><span class="hint">Forex defaults to 100,000 units; adjust for your broker/instrument.</span></div>
         <div class="field"><label for="entryTime">Entry date &amp; time</label><input id="entryTime" type="datetime-local"></div>
       </div>
@@ -39,7 +41,7 @@
       const $ = selector => document.querySelector(selector);
       const assets = {
         forex: 'AUDCAD AUDCHF AUDJPY AUDNZD AUDUSD CADCHF CADJPY CHFJPY EURAUD EURCAD EURCHF EURGBP EURJPY EURNZD EURUSD GBPAUD GBPCAD GBPCHF GBPJPY GBPNZD GBPUSD NZDCAD NZDCHF NZDJPY NZDUSD USDCAD USDCHF USDJPY USDCNH USDHKD USDSGD USDZAR'.split(' '),
-        metals: 'XAUUSD XAGUSD XPTUSD XPDUSD XAUEUR XAUGBP XAJPY COPPER'.split(' '),
+        metals: 'XAUUSD XAGUSD XPTUSD XPDUSD XAUEUR XAUGBP XAUJPY XAGEUR COPPER'.split(' '),
         indices: 'US30 US500 NAS100 US100 US2000 UK100 GER40 DE40 FRA40 EU50 JP225 AUS200 HK50'.split(' '),
         crypto: 'BTCUSD ETHUSD SOLUSD XRPUSD ADAUSD DOGEUSD BNBUSD LTCUSD BCHUSD AVAXUSD DOTUSD LINKUSD'.split(' '),
         stocks: 'AAPL MSFT NVDA AMZN GOOGL META TSLA JPM V SPY QQQ'.split(' '),
@@ -55,8 +57,7 @@
         $('#assetOptions').replaceChildren(...(assets[category] || []).map(symbol => {
           const option = document.createElement('option'); option.value = symbol; return option;
         }));
-        if (category !== 'forex') $('#contractSize').value = category === 'metals' ? '100' : '1';
-        else $('#contractSize').value = '100000';
+        $('#contractSize').value = category === 'forex' ? '100000' : category === 'metals' ? '100' : '1';
         calculate();
       }
 
@@ -92,7 +93,7 @@
       }
 
       function reset() {
-        $('#category').value = 'forex'; $('#symbol').value = ''; $('#side').value = 'Long'; $('#lots').value = ''; $('#entry').value = ''; $('#entryTime').value = '';
+        $('#category').value = 'forex'; $('#symbol').value = ''; $('#side').value = 'Long'; $('#lots').value = ''; $('#entry').value = ''; $('#stopLoss').value = ''; $('#takeProfit').value = ''; $('#entryTime').value = '';
         exits.replaceChildren(); $('#contractSize').value = '100000'; $('#notice').textContent = ''; calculate();
       }
 
@@ -102,7 +103,10 @@
       $('#clear').addEventListener('click', reset);
       $('#save').addEventListener('click', () => {
         const symbol = $('#symbol').value.trim().toUpperCase(), opened = number('#lots'), entry = number('#entry'), contract = number('#contractSize');
+        const stopLoss = $('#stopLoss').value === '' ? null : number('#stopLoss');
+        const takeProfit = $('#takeProfit').value === '' ? null : number('#takeProfit');
         if (!symbol || !(opened > 0) || !(entry > 0) || !(contract > 0)) { $('#notice').textContent = 'Enter an asset, positive opened size, entry price, and contract size.'; return; }
+        if ((stopLoss !== null && (!(stopLoss > 0) || !Number.isFinite(stopLoss))) || (takeProfit !== null && (!(takeProfit > 0) || !Number.isFinite(takeProfit)))) { $('#notice').textContent = 'Stop loss and take profit must be positive prices, or left blank.'; return; }
         const exitRows = Array.from(exits.querySelectorAll('.exit-row'));
         const exitList = exitRows.map(row => ({ lots: Number(row.querySelector('.exit-size').value), price: Number(row.querySelector('.exit-price').value) })).filter(item => item.lots > 0 && item.price > 0);
         const closed = exitList.reduce((total, item) => total + item.lots, 0);
@@ -112,7 +116,7 @@
           const current = JSON.parse(localStorage.getItem('fxjourney-trades') || '[]');
           if (!Array.isArray(current)) throw new Error('Stored trades are not a list.');
           const lastExit = exitList.length ? new Date().toISOString() : '';
-          current.unshift({ id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`, category: $('#category').value, symbol, side: $('#side').value, lots: opened, entry, entryPrice: entry, contractSize: contract, exits: exitList, closedLots: closed, remainingLots: Math.max(0, opened - closed), pnl, entryTime: $('#entryTime').value || new Date().toISOString(), exitTime: lastExit, images: [] });
+          current.unshift({ id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`, category: $('#category').value, symbol, side: $('#side').value, lots: opened, entry, entryPrice: entry, stopLoss, takeProfit, contractSize: contract, exits: exitList, closedLots: closed, remainingLots: Math.max(0, opened - closed), pnl, entryTime: $('#entryTime').value || new Date().toISOString(), exitTime: lastExit, images: [] });
           localStorage.setItem('fxjourney-trades', JSON.stringify(current));
           $('#notice').textContent = `Saved. Realized P&L: ${money(pnl)}. Open size remaining: ${Math.max(0, opened - closed).toFixed(4)}.`;
         } catch (error) {
