@@ -6,15 +6,21 @@
   <meta name="theme-color" content="#08111f">
   <title>FX Journey — Trading journal</title>
   <style>
-    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2d;--line:#213653;--cyan:#67dcff;--white:#f4f8ff;--muted:#8da2ba;--green:#38d9a9;--red:#ff7184}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 75% -20%,#173b65 0,transparent 35%),var(--bg);color:var(--white);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}.sidebar{padding:20px 14px;border-right:1px solid var(--line);background:#091625}.brand{font-size:19px;font-weight:800;margin:0 8px 22px}.nav{display:grid;gap:6px}.nav a{display:block;padding:10px 12px;border-radius:8px;color:var(--muted);text-decoration:none}.nav a.active,.nav a:hover{color:var(--white);background:#10243a}.main{min-width:0}.topbar{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}.topbar h1{font-size:24px;margin:0}.date{color:var(--muted)}.section{padding:22px 24px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.card,.panel{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px}.label{color:var(--muted);font-size:12px}.metric{font-size:24px;font-weight:800;margin-top:7px}.positive{color:var(--green)}.negative{color:var(--red)}.panel h2{margin:0 0 12px;font-size:18px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-size:12px}tbody tr:last-child td{border-bottom:0}.empty{padding:22px;color:var(--muted);text-align:center}.button{display:inline-block;padding:10px 14px;border:1px solid #087da0;border-radius:8px;background:#087da0;color:white;font:inherit;font-weight:700;text-decoration:none}.actions{display:flex;gap:10px;align-items:center}.hint{margin-top:12px;color:var(--muted);font-size:13px}@media(max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.app{display:block;padding-bottom:58px}.sidebar{position:fixed;z-index:5;bottom:0;left:0;right:0;height:58px;padding:5px;border-right:0;border-top:1px solid var(--line)}.brand{display:none}.nav{display:flex}.nav a{flex:1;text-align:center;padding:11px 4px;font-size:13px}.topbar{padding:14px}.topbar h1{font-size:20px}.section{padding:14px}.cards{gap:8px}.metric{font-size:20px}}
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2d;--line:#213653;--cyan:#67dcff;--white:#f4f8ff;--muted:#8da2ba;--green:#38d9a9;--red:#ff7184}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 75% -20%,#173b65 0,transparent 35%),var(--bg);color:var(--white);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}.sidebar{padding:20px 14px;border-right:1px solid var(--line);background:#091625}.brand{font-size:19px;font-weight:800;margin:0 8px 22px}.nav{display:grid;gap:6px}.nav a,.nav button{display:block;width:100%;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);text-decoration:none;text-align:left;font:inherit;cursor:pointer}.nav a.active,.nav button.active,.nav a:hover,.nav button:hover{color:var(--white);background:#10243a}.main{min-width:0}.topbar{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}.topbar h1{font-size:24px;margin:0}.date{color:var(--muted)}.section{display:none;padding:22px 24px}.section.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.card,.panel{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px}.label{color:var(--muted);font-size:12px}.metric{font-size:24px;font-weight:800;margin-top:7px}.positive{color:var(--green)}.negative{color:var(--red)}.panel h2{margin:0 0 12px;font-size:18px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-size:12px}tbody tr:last-child td{border-bottom:0}.empty{padding:22px;color:var(--muted);text-align:center}.button{display:inline-block;padding:10px 14px;border:1px solid #087da0;border-radius:8px;background:#087da0;color:white;font:inherit;font-weight:700;text-decoration:none}.actions{display:flex;gap:10px;align-items:center}.hint{margin-top:12px;color:var(--muted);font-size:13px}.settings-form{max-width:620px;display:grid;gap:14px}.field{display:grid;gap:6px}.field label{font-weight:650}.field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#071522;color:var(--white);font:inherit}.save-button{justify-self:start;padding:10px 15px;border:1px solid #087da0;border-radius:8px;background:#087da0;color:white;font:inherit;font-weight:700;cursor:pointer}.status{min-height:1.5em;color:var(--green)}@media(max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.app{display:block;padding-bottom:58px}.sidebar{position:fixed;z-index:5;bottom:0;left:0;right:0;height:58px;padding:5px;border-right:0;border-top:1px solid var(--line)}.brand{display:none}.nav{display:flex;overflow-x:auto}.nav a,.nav button{flex:1;min-width:max-content;text-align:center;padding:11px 8px;font-size:12px}.topbar{padding:14px}.topbar h1{font-size:20px}.section{padding:14px}.cards{gap:8px}.metric{font-size:20px}}
   </style>
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar"><div class="brand">FX Journey</div><nav class="nav" aria-label="Main navigation"><a class="active" href="./">Dashboard</a><a href="./trade-logger.html">Trade logger</a><a href="./journal.html">Trade journal</a></nav></aside>
+    <aside class="sidebar"><div class="brand">FX Journey</div><nav class="nav" aria-label="Main navigation">
+      <a class="active" href="./">Dashboard</a>
+      <a href="./trade-logger.html">Trade logger</a>
+      <a href="./journal.html">Trade journal</a>
+      <a href="./economic-calendar.html">Economic calendar</a>
+      <button type="button" data-page="settings">Settings</button>
+    </nav></aside>
     <main class="main">
-      <header class="topbar"><div><h1>Your Journey</h1><div class="date" id="today"></div></div><div class="actions"><a class="button" href="./trade-logger.html">+ Log a trade</a></div></header>
-      <section class="section" aria-label="Trading dashboard">
+      <header class="topbar"><div><h1 id="welcome">Your Journey</h1><div class="date" id="today"></div></div><div class="actions"><a class="button" href="./trade-logger.html">+ Log a trade</a></div></header>
+      <section class="section active" id="dashboardPage" aria-label="Trading dashboard">
         <div class="cards">
           <article class="card"><div class="label">Net P&amp;L</div><div class="metric" id="net">$0.00</div></article>
           <article class="card"><div class="label">Win rate</div><div class="metric" id="winRate">0%</div></article>
@@ -23,13 +29,24 @@
         </div>
         <section class="panel"><h2>Recent trades</h2><div class="table-wrap"><table><thead><tr><th>Asset</th><th>Direction</th><th>Size</th><th>Entry</th><th>Stop loss</th><th>Take profit</th><th>P&amp;L</th></tr></thead><tbody id="recentTrades"></tbody></table><div class="empty" id="emptyState" hidden>No trades yet. Use Trade Logger to record your first trade.</div></div><div class="hint">Trade details and images are managed in the Trade Logger and Trade Journal.</div></section>
       </section>
+      <section class="section" id="settingsPage" aria-labelledby="settingsTitle">
+        <section class="panel settings-form"><div><h2 id="settingsTitle">Settings</h2><p class="hint">Manage your account display name, currency, and trading preferences.</p></div>
+          <div class="field"><label for="accountName">Display name</label><input id="accountName" type="text" autocomplete="name" placeholder="Your name"></div>
+          <div class="field"><label for="accountCurrency">Account currency</label><select id="accountCurrency"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — British Pound</option><option value="JPY">JPY — Japanese Yen</option><option value="CAD">CAD — Canadian Dollar</option><option value="AUD">AUD — Australian Dollar</option><option value="CHF">CHF — Swiss Franc</option></select></div>
+          <div class="field"><label for="accountBalance">Starting balance</label><input id="accountBalance" type="number" min="0" step="any" placeholder="0.00"></div>
+          <div class="field"><label for="riskPercent">Risk per trade (%)</label><input id="riskPercent" type="number" min="0" max="100" step="any" placeholder="1"></div>
+          <button class="save-button" id="saveSettings" type="button">Save settings</button><div class="status" id="settingsStatus" role="status" aria-live="polite"></div>
+        </section>
+      </section>
     </main>
   </div>
   <script>
     const $ = selector => document.querySelector(selector);
     const escapeHTML = value => String(value ?? '—').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-    function readTrades() { try { const value = JSON.parse(localStorage.getItem('fxjourney-trades') || '[]'); return Array.isArray(value) ? value : []; } catch { return []; } }
-    function money(value) { const amount = Number(value) || 0; let currency = 'USD'; try { currency = JSON.parse(localStorage.getItem('fxjourney-settings') || '{}').currency || currency; } catch {} try { return new Intl.NumberFormat(undefined, {style:'currency',currency}).format(amount); } catch { return '$' + amount.toFixed(2); } }
+    function readJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); } catch { return fallback; } }
+    function readTrades() { const value = readJSON('fxjourney-trades', []); return Array.isArray(value) ? value : []; }
+    let settings = readJSON('fxjourney-settings', {});
+    function money(value) { const amount = Number(value) || 0; try { return new Intl.NumberFormat(undefined, {style:'currency',currency:settings.currency || 'USD'}).format(amount); } catch { return '$' + amount.toFixed(2); } }
     function render() {
       const trades = readTrades(), pnl = trades.reduce((sum, trade) => sum + (Number(trade.pnl) || 0), 0), wins = trades.filter(trade => Number(trade.pnl) > 0).length;
       $('#net').textContent = money(pnl); $('#net').className = 'metric ' + (pnl > 0 ? 'positive' : pnl < 0 ? 'negative' : '');
@@ -37,8 +54,12 @@
       $('#recentTrades').innerHTML = trades.slice(0, 10).map(trade => `<tr><td>${escapeHTML(trade.symbol)}</td><td>${escapeHTML(trade.side)}</td><td>${escapeHTML(trade.lots)}</td><td>${escapeHTML(trade.entry ?? trade.entryPrice)}</td><td>${escapeHTML(trade.stopLoss ?? trade.stop)}</td><td>${escapeHTML(trade.takeProfit ?? trade.target)}</td><td class="${Number(trade.pnl) >= 0 ? 'positive' : 'negative'}">${money(trade.pnl)}</td></tr>`).join('');
       $('#emptyState').hidden = trades.length > 0;
     }
+    function showPage(name) { document.querySelectorAll('.section').forEach(section => section.classList.toggle('active', section.id === name + 'Page')); document.querySelectorAll('.nav [data-page]').forEach(button => button.classList.toggle('active', button.dataset.page === name)); }
+    document.querySelector('[data-page="settings"]').addEventListener('click', () => showPage('settings'));
+    function loadSettings() { settings = readJSON('fxjourney-settings', {}); $('#accountName').value = settings.name || ''; $('#accountCurrency').value = settings.currency || 'USD'; $('#accountBalance').value = settings.balance ?? ''; $('#riskPercent').value = settings.riskPercent ?? settings.riskPct ?? ''; $('#welcome').textContent = settings.name ? `Welcome, ${settings.name}` : 'Your Journey'; }
+    $('#saveSettings').addEventListener('click', () => { settings = {...settings, name:$('#accountName').value.trim(), currency:$('#accountCurrency').value, balance:Number($('#accountBalance').value) || 0, riskPercent:Number($('#riskPercent').value) || 0}; localStorage.setItem('fxjourney-settings', JSON.stringify(settings)); $('#settingsStatus').textContent = 'Settings saved.'; $('#welcome').textContent = settings.name ? `Welcome, ${settings.name}` : 'Your Journey'; render(); });
     $('#today').textContent = new Intl.DateTimeFormat(undefined, {weekday:'long',month:'long',day:'numeric',year:'numeric'}).format(new Date());
-    window.addEventListener('storage', render); render();
+    window.addEventListener('storage', () => { loadSettings(); render(); }); loadSettings(); render();
   </script>
 </body>
 </html>
