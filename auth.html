@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <title>Account access — FX Journey</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2d;--line:#213653;--cyan:#67dcff;--white:#f4f8ff;--muted:#8da2ba;--green:#38d9a9;--red:#ff7184}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 75% -20%,#173b65 0,transparent 35%),var(--bg);color:var(--white);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.card{width:min(440px,100%);padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:0 20px 70px #0005}h1{margin:0 0 6px;font-size:26px}.muted{color:var(--muted);margin:0 0 22px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}.tabs button,.submit{border:1px solid var(--line);border-radius:9px;padding:11px;background:#10243a;color:var(--white);font:inherit;cursor:pointer}.tabs button[aria-selected=true],.submit{background:#087da0;border-color:#087da0}.field{display:grid;gap:6px;margin:14px 0}.field input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#071522;color:var(--white);font:inherit}.submit{width:100%;margin-top:8px;font-weight:700}.message{min-height:24px;margin-top:14px;color:var(--muted)}.message.error{color:var(--red)}.message.success{color:var(--green)}.hidden{display:none!important}.links{display:flex;justify-content:space-between;align-items:center;margin-top:16px}.links button,.links a{padding:0;border:0;background:none;color:var(--cyan);font:inherit;cursor:pointer;text-decoration:none}.signed-in{display:grid;gap:12px}.signed-in button{padding:11px;border:1px solid var(--line);border-radius:8px;background:#10243a;color:var(--white);font:inherit;cursor:pointer}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>FX Journey</h1>
+    <p class="muted">Sign in or create an account to continue.</p>
+    <section id="authView">
+      <div class="tabs" role="tablist" aria-label="Account action">
+        <button id="loginTab" type="button" role="tab" aria-selected="true">Sign in</button>
+        <button id="signupTab" type="button" role="tab" aria-selected="false">Create account</button>
+      </div>
+      <form id="authForm">
+        <label class="field"><span>Email address</span><input id="email" type="email" autocomplete="email" required maxlength="254"></label>
+        <label class="field"><span>Password</span><input id="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" aria-describedby="passwordHint"><small id="passwordHint" class="muted">At least 8 characters.</small></label>
+        <button class="submit" id="submitButton" type="submit">Sign in</button>
+      </form>
+      <div class="links"><button id="resetButton" type="button">Forgot password?</button><a href="./">Back to dashboard</a></div>
+      <p class="message" id="message" role="status" aria-live="polite"></p>
+    </section>
+    <section id="signedInView" class="signed-in hidden">
+      <p class="message success" id="signedInMessage"></p>
+      <a class="submit" style="display:block;text-align:center;text-decoration:none" href="./">Continue to dashboard</a>
+      <a href="./journal.html" style="color:var(--cyan)">Open trade journal</a>
+      <button id="signOutButton" type="button">Sign out</button>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./auth.js" defer></script>
+</body>
+</html>
